@@ -1,0 +1,53 @@
+#  QUESTION & ANSWER
+#
+#    1. 다음의 조건으로 Deployment을 사용하는 dep-lab.yaml 파일을 생성하고 apply 명령으로 동작시킵니다.
+#  - labels(name: apache, app: main, rel: stable)를 가지는 httpd:2.2 비전의 Pod를 2개 히스토리를 기록하며 운영합니다.
+#  - annotations( kubernetes.io/change-cause: verslon 2.2) 를 추가로 설정합니다.
+#  - deployment name : dep-mainui
+#  - container : httpd:2.2
+#    1. 동작 되는 dep-lab.yaml 의 이미지를 http:2.4 버전으로 rolling update 합니다.
+#    단, apply 명령을 통해 rolling update 진행합니다.
+#    2. 현재의 dep-mainui 히스토리(histoy)를 확인하고 rollback 시킵니다.
+#    3. 현재 동작중인 Pod의 httpd 이미지 버전은 어떻게 되는지 확인합니다.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-mainui
+  annotations:
+    kubernetes.io/change-cause: version 2.2
+spec:
+  selector:
+    matchLabels:
+      name: apache
+      app: main
+      rel: stable
+  template:
+    metadata:
+      name: aaa
+      labels:
+        name: apache
+        app: main
+        rel: stable
+    spec:
+      containers:
+        - name: dep-mainui
+          image: httpd:2.2
+
+
+# kubectl create -f [file_name] --record
+
+# kubectl get po -o wide
+
+# [ yaml 파일 편집  annotations, image 버전 변경 ]
+
+# kubectl apply -f [file_name] --record
+
+# kubectl rollout status deployment dep-mainui
+
+# kubectl rollout history deployment dep-mainui
+
+# kubectl rollout undo deployment dep-mainuo --to-revision=[버전]
+
+# kubectl describe po [po 명]
+
