@@ -1,0 +1,27 @@
+#job-exam.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-example
+spec:
+  # 세번까지 실행
+  completions: 5
+  # 병렬을 두개까지
+  parallelism: 2
+  # 5초안에 안끝나면 terminating
+  activeDeadlineSeconds: 5
+  template:
+    spec:
+      containers:
+        - name: centos-container
+          image: centos:7
+          command: ["bash"]
+          args:
+            - "-c"
+            - "echo 'Hello World'; sleep 50; echo 'Bye'"
+      restartPolicy: Never
+      #restartPolicy: OnFailure
+      # never => pod 재시작
+      # restartPolicy => container 재시작
+  #backoffLimit: 3 #기본 5
+

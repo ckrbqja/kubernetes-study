@@ -1,0 +1,22 @@
+# statefulset-exam
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sf-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webui
+  serviceName: sf-service
+  #podManagementPolicy: OrderedReady
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: webui
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.14
